@@ -43,11 +43,14 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(OPENCV_HOME)\sources\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OPENCV_HOME)\sources\include\opencv;$(OPENCV_HOME)\sources\modules\core\include;$(OPENCV_HOME)\sources\modules\imgproc\include;$(OPENCV_HOME)\sources\modules\video\include;$(OPENCV_HOME)\sources\modules\features2d\include;$(OPENCV_HOME)\sources\modules\flann\include;$(OPENCV_HOME)\sources\modules\calib3d\include;$(OPENCV_HOME)\sources\modules\objdetect\include;$(OPENCV_HOME)\sources\modules\legacy\include;$(OPENCV_HOME)\sources\modules\ml\include;$(OPENCV_HOME)\sources\modules\contrib\include;$(OPENCV_HOME)\sources\modules\highgui\include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(OPENCV_HOME)\build\x86\vc12\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opencv_calib3d248d.lib;opencv_contrib248d.lib;opencv_core248d.lib;opencv_features2d248d.lib;opencv_flann248d.lib;opencv_gpu248d.lib;opencv_highgui248d.lib;opencv_imgproc248d.lib;opencv_legacy248d.lib;opencv_ml248d.lib;opencv_nonfree248d.lib;opencv_objdetect248d.lib;opencv_ocl248d.lib;opencv_photo248d.lib;opencv_stitching248d.lib;opencv_superres248d.lib;opencv_ts248d.lib;opencv_video248d.lib;opencv_videostab248d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -64,6 +67,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="OnlineFaceRec.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
