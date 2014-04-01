@@ -43,7 +43,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(OPENCV_HOME)\sources\include\opencv;$(OPENCV_HOME)\sources\modules\core\include;$(OPENCV_HOME)\sources\modules\imgproc\include;$(OPENCV_HOME)\sources\modules\video\include;$(OPENCV_HOME)\sources\modules\features2d\include;$(OPENCV_HOME)\sources\modules\flann\include;$(OPENCV_HOME)\sources\modules\calib3d\include;$(OPENCV_HOME)\sources\modules\objdetect\include;$(OPENCV_HOME)\sources\modules\legacy\include;$(OPENCV_HOME)\sources\modules\ml\include;$(OPENCV_HOME)\sources\modules\contrib\include;$(OPENCV_HOME)\sources\modules\highgui\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OPENCV_HOME)\sources\include;$(OPENCV_HOME)\sources\modules\core\include;$(OPENCV_HOME)\sources\modules\imgproc\include;$(OPENCV_HOME)\sources\modules\video\include;$(OPENCV_HOME)\sources\modules\features2d\include;$(OPENCV_HOME)\sources\modules\flann\include;$(OPENCV_HOME)\sources\modules\calib3d\include;$(OPENCV_HOME)\sources\modules\objdetect\include;$(OPENCV_HOME)\sources\modules\legacy\include;$(OPENCV_HOME)\sources\modules\ml\include;$(OPENCV_HOME)\sources\modules\contrib\include;$(OPENCV_HOME)\sources\modules\highgui\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>

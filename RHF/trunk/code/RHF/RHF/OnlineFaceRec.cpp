@@ -43,9 +43,9 @@
 #include <vector>
 #include <string>
 //#include <string.h>
-#include "cv.h"
-#include "cvaux.h"
-#include "highgui.h"
+#include "opencv/cv.h"
+#include "opencv/cvaux.h"
+#include "opencv/highgui.h"
 
 #ifndef BOOL
 	#define BOOL bool
