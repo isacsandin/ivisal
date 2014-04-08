@@ -18,8 +18,14 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Train.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Train.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{20D6115B-F279-4A20-89D1-193CCE68A09E}</ProjectGuid>
+    <ProjectGuid>{97929B15-2B8E-4A47-908E-F02A37F3379A}</ProjectGuid>
     <RootNamespace>RHF</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -71,7 +77,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(OPENCV_HOME)\sources\include;$(OPENCV_HOME)\sources\modules\core\include;$(OPENCV_HOME)\sources\modules\imgproc\include;$(OPENCV_HOME)\sources\modules\video\include;$(OPENCV_HOME)\sources\modules\features2d\include;$(OPENCV_HOME)\sources\modules\flann\include;$(OPENCV_HOME)\sources\modules\calib3d\include;$(OPENCV_HOME)\sources\modules\objdetect\include;$(OPENCV_HOME)\sources\modules\legacy\include;$(OPENCV_HOME)\sources\modules\ml\include;$(OPENCV_HOME)\sources\modules\contrib\include;$(OPENCV_HOME)\sources\modules\highgui\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Common;$(OPENCV_HOME)\sources\include;$(OPENCV_HOME)\sources\modules\core\include;$(OPENCV_HOME)\sources\modules\imgproc\include;$(OPENCV_HOME)\sources\modules\video\include;$(OPENCV_HOME)\sources\modules\features2d\include;$(OPENCV_HOME)\sources\modules\flann\include;$(OPENCV_HOME)\sources\modules\calib3d\include;$(OPENCV_HOME)\sources\modules\objdetect\include;$(OPENCV_HOME)\sources\modules\legacy\include;$(OPENCV_HOME)\sources\modules\ml\include;$(OPENCV_HOME)\sources\modules\contrib\include;$(OPENCV_HOME)\sources\modules\highgui\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
@@ -122,10 +128,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="camera.cpp" />
-    <ClCompile Include="OnlineFaceRec.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
