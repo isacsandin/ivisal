@@ -1,3 +1,5 @@
+#pragma once
+
 #include <stdio.h>
 #if defined WIN32 || defined _WIN32
 	#include<Windows.h>
@@ -70,23 +72,26 @@
 
 #define USE_MAHALANOBIS_DISTANCE	// You might get better recognition accuracy if you enable this.
 //#define	MAX_NAME_LENGTH 256		// Give each name a fixed size for easier code.
-#define SAVE_EIGENFACE_IMAGES = 1;		// Set to 0 if you dont want images of the Eigenvectors saved to files (for debugging).
+int SAVE_EIGENFACE_IMAGES = 1;		// Set to 0 if you dont want images of the Eigenvectors saved to files (for debugging).
 
 
 using namespace std;
 
-namespace Utils{
+namespace Utils
+{
 	// Haar Cascade file, used for Face Detection.
 	const char *faceCascadeFilename = "haarcascade_frontalface_alt.xml";
 
 
 
 
-	void doPCA();
+	void doPCA(int nEigens,int nTrainFaces, IplImage** faceImgArr);
+
 	IplImage* convertImageToGreyscale(const IplImage *imageSrc);
 	IplImage* resizeImage(const IplImage *origImg, int newWidth, int newHeight);
 	IplImage* cropImage(const IplImage *img, const CvRect region);
 	IplImage* convertFloatImageToUcharImage(const IplImage *srcImg);
 	void saveFloatImage(const char *filename, const IplImage *srcImg);
 	CvRect detectFaceInImage(const IplImage *inputImg, const CvHaarClassifierCascade* cascade);
+	IplImage* convertFloatImageToUcharImage(const IplImage *srcImg);
 }
