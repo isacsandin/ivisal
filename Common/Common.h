@@ -79,10 +79,7 @@ namespace Utils{
 	// Haar Cascade file, used for Face Detection.
 	const char *faceCascadeFilename = "haarcascade_frontalface_alt.xml";
 
-
-
-
-	void doPCA();
+	void doPCA(int nEigens,int nTrainFaces,IplImage ** faceImgArr);
 	IplImage* convertImageToGreyscale(const IplImage *imageSrc);
 	IplImage* resizeImage(const IplImage *origImg, int newWidth, int newHeight);
 	IplImage* cropImage(const IplImage *img, const CvRect region);

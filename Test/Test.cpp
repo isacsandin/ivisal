@@ -3,6 +3,15 @@
 
 Test::Test(void)
 {
+	faceImgArr				= 0; // array of face images
+	personNumTruthMat		= 0; // array of person numbers
+	nPersons                = 0; // the number of people in the training set. Added by Shervin.
+	nTrainFaces             = 0; // the number of training images
+	nEigens                 = 0; // the number of eigenvalues
+	pAvgTrainImg			= 0; // the average image
+	eigenVectArr			= 0; // eigenvectors
+	eigenValMat				= 0; // eigenvalues
+	projectedTrainFaceMat	= 0; // projected training faces
 }
 
 
@@ -11,7 +20,7 @@ Test::~Test(void)
 }
 
 // Open the training data from the file 'facedata.xml'.
-int loadTrainingData(CvMat ** pTrainPersonNumMat)
+int Test::loadTrainingData(CvMat ** pTrainPersonNumMat)
 {
 	CvFileStorage * fileStorage;
 	int i;
@@ -70,7 +79,7 @@ int loadTrainingData(CvMat ** pTrainPersonNumMat)
 }
 
 // Recognize the face in each of the test images given, and compare the results with the truth.
-void recognizeFileList(const char *szFileTest)
+void Test::recognizeFileList(const char *szFileTest)
 {
 	int i, nTestFaces  = 0;         // the number of test images
 	CvMat * trainPersonNumMat = 0;  // the person numbers during training
@@ -130,7 +139,7 @@ void recognizeFileList(const char *szFileTest)
 
 
 // Find the most likely person based on a detection. Returns the index, and stores the confidence value into pConfidence.
-int findNearestNeighbor(float * projectedTestFace, float *pConfidence)
+int Test::findNearestNeighbor(float * projectedTestFace, float *pConfidence)
 {
 	//double leastDistSq = 1e12;
 	double leastDistSq = DBL_MAX;

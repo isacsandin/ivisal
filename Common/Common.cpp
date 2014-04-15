@@ -3,7 +3,7 @@
 
 // Do the Principal Component Analysis, finding the average image
 // and the eigenfaces that represent any image in the given dataset.
-void Utils::doPCA(int nEigens,int nTrainFaces){
+void Utils::doPCA(int nEigens,int nTrainFaces,IplImage ** faceImgArr){
 
 	int i;
 	CvTermCriteria calcLimit;
