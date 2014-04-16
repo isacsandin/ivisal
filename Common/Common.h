@@ -13,12 +13,9 @@
 	#include <sys/types.h>
 	#include <sys/stat.h>	// For mkdir(path, options) on Linux
 #endif
-#include <vector>
-#include <string>
-//#include <string.h>
-#include "opencv/cv.h"
-#include "opencv/cvaux.h"
-#include "opencv/highgui.h"
+
+
+using namespace std;
 
 #ifndef BOOL
 	#define BOOL bool
@@ -71,27 +68,11 @@
 #endif
 
 #define USE_MAHALANOBIS_DISTANCE	// You might get better recognition accuracy if you enable this.
+
 //#define	MAX_NAME_LENGTH 256		// Give each name a fixed size for easier code.
-int SAVE_EIGENFACE_IMAGES = 1;		// Set to 0 if you dont want images of the Eigenvectors saved to files (for debugging).
-
-
-using namespace std;
-
-namespace Utils
-{
-	// Haar Cascade file, used for Face Detection.
-	const char *faceCascadeFilename = "haarcascade_frontalface_alt.xml";
+static int SAVE_EIGENFACE_IMAGES = 1;		// Set to 0 if you dont want images of the Eigenvectors saved to files (for debugging).
 
 
 
 
-	void doPCA(int nEigens,int nTrainFaces, IplImage** faceImgArr);
 
-	IplImage* convertImageToGreyscale(const IplImage *imageSrc);
-	IplImage* resizeImage(const IplImage *origImg, int newWidth, int newHeight);
-	IplImage* cropImage(const IplImage *img, const CvRect region);
-	IplImage* convertFloatImageToUcharImage(const IplImage *srcImg);
-	void saveFloatImage(const char *filename, const IplImage *srcImg);
-	CvRect detectFaceInImage(const IplImage *inputImg, const CvHaarClassifierCascade* cascade);
-	IplImage* convertFloatImageToUcharImage(const IplImage *srcImg);
-}

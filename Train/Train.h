@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Common.h"
+#include "Utils.h"
 
 class Train
 {
@@ -14,6 +15,7 @@ private:
 	CvMat * projectedTrainFaceMat;		// projected training faces
 	IplImage * pAvgTrainImg;			// the average image
 	IplImage** eigenVectArr;			// eigenvectors
+	
 
 public:
 	Train(void);
