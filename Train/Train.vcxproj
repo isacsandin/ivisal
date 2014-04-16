@@ -23,7 +23,7 @@
     <ClInclude Include="Train.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Maincpp.cpp" />
+    <ClCompile Include="Main.cpp" />
     <ClCompile Include="Train.cpp" />
   </ItemGroup>
   <ItemGroup>

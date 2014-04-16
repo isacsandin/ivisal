@@ -21,4 +21,5 @@ namespace Utils
 	void saveFloatImage(const char *filename, const IplImage *srcImg);
 	CvRect detectFaceInImage(const IplImage *inputImg, const CvHaarClassifierCascade* cascade);
 	IplImage* convertFloatImageToUcharImage(const IplImage *srcImg);
+	int loadFaceImgArray(const char * filename);
 }

@@ -20,7 +20,6 @@ private:
 public:
 	Train(void);
 	~Train(void);
-	int loadFaceImgArray(const char * filename);
 	void learn(const char *szFileTrain);
 	void storeTrainingData();
 	void storeEigenfaceImages(int nEigens);

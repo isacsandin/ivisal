@@ -92,7 +92,7 @@ void Test::recognizeFileList(const char *szFileTest)
 	float confidence;
 
 	// load test images and ground truth for person number
-	nTestFaces = loadFaceImgArray(szFileTest);
+	nTestFaces = Utils::loadFaceImgArray(szFileTest);
 	printf("%d test faces loaded\n", nTestFaces);
 
 	// load the saved training data
