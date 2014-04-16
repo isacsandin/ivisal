@@ -19,11 +19,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Train.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Maincpp.cpp" />
     <ClCompile Include="Train.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Train.rc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{97929B15-2B8E-4A47-908E-F02A37F3379A}</ProjectGuid>
