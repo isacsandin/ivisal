@@ -137,6 +137,44 @@ void Test::recognizeFileList(const char *szFileTest)
 }
 
 
+// Recognize the face in test images given, and return the best 5 images.
+void Test::recognizeImage(const char *imgFilename)
+{
+	int i, nTestFaces  = 0;         // the number of test images
+	CvMat * trainPersonNumMat = 0;  // the person numbers during training
+	float * projectedTestFace = 0;
+	const char *answer;
+	double timeFaceRecognizeStart;
+	double tallyFaceRecognizeTime;
+
+	IplImage * faceImg = (IplImage *)cvAlloc(sizeof(IplImage));
+	faceImg = cvLoadImage(imgFilename, CV_LOAD_IMAGE_GRAYSCALE);
+
+	// load the saved training data
+	if( !loadTrainingData( &trainPersonNumMat ) ) return;
+
+	// project the test images onto the PCA subspace
+	projectedTestFace = (float *)cvAlloc( nEigens*sizeof(float) );
+	timeFaceRecognizeStart = (double)cvGetTickCount();	// Record the timing.
+	int iNearest, nearest, truth;
+
+	// project the test image onto the PCA subspace
+	cvEigenDecomposite(
+		faceImg,
+		nEigens,
+		eigenVectArr,
+		0, 0,
+		pAvgTrainImg,
+		projectedTestFace);
+
+	vector<pair<float,int>> nearesNeighbors = findNearestNeighbors(projectedTestFace);
+	nearest  = trainPersonNumMat->data.i[iNearest];
+
+	tallyFaceRecognizeTime = (double)cvGetTickCount() - timeFaceRecognizeStart;
+	printf("TOTAL TIME: %.1fms average.\n", tallyFaceRecognizeTime/((double)cvGetTickFrequency() * 1000.0 * (nCorrect+nWrong) ) );
+
+}
+
 
 // Find the most likely person based on a detection. Returns the index, and stores the confidence value into pConfidence.
 int Test::findNearestNeighbor(float * projectedTestFace, float *pConfidence)
@@ -175,3 +213,36 @@ int Test::findNearestNeighbor(float * projectedTestFace, float *pConfidence)
 	return iNearest;
 }
 
+// Find the most likely person based on a detection. Returns the index, and stores the confidence value into pConfidence.
+vector<pair<float,int>> Test::findNearestNeighbors(float * projectedTestFace)
+{
+	priority_queue<pair<float,int>,less<pair<float,int> > > neighbors;
+	vector<pair<float,int> > nearestNeighbors;
+
+	//double leastDistSq = 1e12;
+	double leastDistSq = DBL_MAX;
+	int i, iTrain, iNearest = 0;
+
+	for(iTrain=0; iTrain<nTrainFaces; iTrain++)
+	{
+		double distSq=0;
+
+		for(i=0; i<nEigens; i++)
+		{
+			float d_i = projectedTestFace[i] - projectedTrainFaceMat->data.fl[iTrain*nEigens + i];
+#ifdef USE_MAHALANOBIS_DISTANCE
+			distSq += d_i*d_i / eigenValMat->data.fl[i];  // Mahalanobis distance (might give better results than Eucalidean distance)
+#else
+			distSq += d_i*d_i; // Euclidean distance.
+#endif
+		}
+		float dist = sqrt( distSq / (float)(nTrainFaces * nEigens) ) / 255.0f;
+		neighbors.push(pair<float,int>(dist,iTrain));
+	}
+
+	for(int i=0;i<5;i++){
+		nearestNeighbors.push_back(neighbors.top);
+		neighbors.pop;
+	}
+	return nearestNeighbors;
+}

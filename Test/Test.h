@@ -2,6 +2,7 @@
 
 #include "Common.h"
 #include "Utils.h"
+#include <queue>
 
 class Test
 {
@@ -28,5 +29,7 @@ public:
 	void recognizeFileList(const char *szFileTest);
 	// Find the most likely person based on a detection. Returns the index, and stores the confidence value into pConfidence.
 	int findNearestNeighbor(float * projectedTestFace, float *pConfidence);
+	vector<pair<float,int>> findNearestNeighbors(float * projectedTestFace);
+	void recognizeImage(const char *imgFilename);
 };
 
