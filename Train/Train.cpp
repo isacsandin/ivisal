@@ -26,7 +26,7 @@ void Train::learn(const char *szFileTrain)
 
 	// load training data
 	printf("Loading the training images in '%s'\n", szFileTrain);
-	nTrainFaces = Utils::loadFaceImgArray(szFileTrain);
+	nTrainFaces = Utils::loadFaceImgArray(&faceImgArr, szFileTrain, &nPersons, personNames, &personNumTruthMat);
 	printf("Got %d training images.\n", nTrainFaces);
 	if( nTrainFaces < 2 )
 	{
@@ -37,7 +37,7 @@ void Train::learn(const char *szFileTrain)
 	}
 
 	// do PCA on the training faces
-	Utils::doPCA(nEigens, nTrainFaces, faceImgArr);
+	Utils::doPCA(&nEigens, nTrainFaces, faceImgArr, &eigenVectArr, &pAvgTrainImg, &eigenValMat);
 
 	// project the training images onto the PCA subspace
 	projectedTrainFaceMat = cvCreateMat( nTrainFaces, nEigens, CV_32FC1 );
@@ -104,8 +104,6 @@ void Train::storeTrainingData()
 // Save all the eigenvectors as images, so that they can be checked.
 void Train::storeEigenfaceImages(int nEigens)
 {
-	IplImage * pAvgTrainImg       = 0; // the average image
-	IplImage ** eigenVectArr      = 0; // eigenvectors
 
 	// Store the average image to a file
 	printf("Saving the image of the average face as 'out_averageImage.bmp'.\n");

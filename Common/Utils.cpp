@@ -4,34 +4,30 @@ using namespace std;
 
 // Do the Principal Component Analysis, finding the average image
 // and the eigenfaces that represent any image in the given dataset.
-void Utils::doPCA(int nEigens,int nTrainFaces, IplImage ** faceImgArr){
+void Utils::doPCA(int *nEigensPointer,int nTrainFaces, IplImage ** faceImgArr, IplImage* ** eigenVectArr, 
+				  IplImage* *pAvgTrainImg, CvMat* *eigenValMat){
 
 	int i;
 	CvTermCriteria calcLimit;
 	CvSize faceImgSize;
-	IplImage ** eigenVectArr      = 0; // eigenvectors
-	CvMat * eigenValMat           = 0; // eigenvalues
-	IplImage * pAvgTrainImg       = 0; // the average image
 	CvMat * projectedTrainFaceMat = 0; // projected training faces
 
-
-
-
 	// set the number of eigenvalues to use
-	nEigens = nTrainFaces-1;
+	int nEigens = nTrainFaces-1;
+	*nEigensPointer = nEigens;
 
 	// allocate the eigenvector images
 	faceImgSize.width  = faceImgArr[0]->width;
 	faceImgSize.height = faceImgArr[0]->height;
-	eigenVectArr = (IplImage**)cvAlloc(sizeof(IplImage*) * nEigens);
+	(*eigenVectArr) = (IplImage**)cvAlloc(sizeof(IplImage*) * nEigens);
 	for(i=0; i<nEigens; i++)
-		eigenVectArr[i] = cvCreateImage(faceImgSize, IPL_DEPTH_32F, 1);
+		(*eigenVectArr)[i] = cvCreateImage(faceImgSize, IPL_DEPTH_32F, 1);
 
 	// allocate the eigenvalue array
-	eigenValMat = cvCreateMat( 1, nEigens, CV_32FC1 );
+	(*eigenValMat) = cvCreateMat( 1, nEigens, CV_32FC1 );
 
 	// allocate the averaged image
-	pAvgTrainImg = cvCreateImage(faceImgSize, IPL_DEPTH_32F, 1);
+	(*pAvgTrainImg) = cvCreateImage(faceImgSize, IPL_DEPTH_32F, 1);
 
 	// set the PCA termination criterion
 	calcLimit = cvTermCriteria( CV_TERMCRIT_ITER, nEigens, 1);
@@ -40,15 +36,15 @@ void Utils::doPCA(int nEigens,int nTrainFaces, IplImage ** faceImgArr){
 	cvCalcEigenObjects(
 		nTrainFaces,
 		(void*)faceImgArr,
-		(void*)eigenVectArr,
+		(void*)(*eigenVectArr),
 		CV_EIGOBJ_NO_CALLBACK,
 		0,
 		0,
 		&calcLimit,
-		pAvgTrainImg,
-		eigenValMat->data.fl);
+		(*pAvgTrainImg),
+		(*eigenValMat)->data.fl);
 
-	cvNormalize(eigenValMat, eigenValMat, 1, 0, CV_L1, 0);
+	cvNormalize(*eigenValMat, *eigenValMat, 1, 0, CV_L1, 0);
 }
 
 // Return a new image that is always greyscale, whether the input image was RGB or Greyscale.
@@ -220,17 +216,13 @@ CvRect Utils::detectFaceInImage(const IplImage *inputImg, const CvHaarClassifier
 }
 
 // Read the names & image filenames of people from a text file, and load all those images listed.
-int Utils::loadFaceImgArray(const char * filename)
+int Utils::loadFaceImgArray(IplImage* ** faceImgArr, const char * filename, int *nPersons, vector<string> &personNames, CvMat* *personNumTruthMat)
 {
 	FILE * imgListFile = 0;
 	char imgFilename[512];
 	int iFace, nFaces=0;
 	int i;
-	IplImage ** faceImgArr        = 0; // array of face images
-	CvMat*  personNumTruthMat;			// array of person numbers
-	vector<string> personNames;			// array of person names (indexed by the person number). Added by Shervin.
-	int nPersons;						// the number of people in the training set. Added by Shervin.
-
+	
 	// open the input file
 	if( !(imgListFile = fopen(filename, "r")) )
 	{
@@ -243,11 +235,11 @@ int Utils::loadFaceImgArray(const char * filename)
 	rewind(imgListFile);
 
 	// allocate the face-image array and person number matrix
-	faceImgArr        = (IplImage **)cvAlloc( nFaces*sizeof(IplImage *) );
-	personNumTruthMat = cvCreateMat( 1, nFaces, CV_32SC1 );
+	*faceImgArr        = (IplImage **)cvAlloc( nFaces*sizeof(IplImage *) );
+	(*personNumTruthMat) = cvCreateMat( 1, nFaces, CV_32SC1 );
 
 	personNames.clear();	// Make sure it starts as empty.
-	nPersons = 0;
+	*nPersons = 0;
 
 	// store the face images in an array
 	for(iFace=0; iFace<nFaces; iFace++)
@@ -262,22 +254,22 @@ int Utils::loadFaceImgArray(const char * filename)
 		//printf("Got %d: %d, <%s>, <%s>.\n", iFace, personNumber, personName, imgFilename);
 
 		// Check if a new person is being loaded.
-		if (personNumber > nPersons) {
+		if (personNumber > *nPersons) {
 			// Allocate memory for the extra person (or possibly multiple), using this new person's name.
-			for (i=nPersons; i < personNumber; i++) {
+			for (i=*nPersons; i < personNumber; i++) {
 				personNames.push_back( sPersonName );
 			}
-			nPersons = personNumber;
+			*nPersons = personNumber;
 			//printf("Got new person <%s> -> nPersons = %d [%d]\n", sPersonName.c_str(), nPersons, personNames.size());
 		}
 
 		// Keep the data
-		personNumTruthMat->data.i[iFace] = personNumber;
+		(*personNumTruthMat)->data.i[iFace] = personNumber;
 
 		// load the face image
-		faceImgArr[iFace] = cvLoadImage(imgFilename, CV_LOAD_IMAGE_GRAYSCALE);
+		(*faceImgArr)[iFace] = cvLoadImage(imgFilename, CV_LOAD_IMAGE_GRAYSCALE);
 
-		if( !faceImgArr[iFace] )
+		if( !(*faceImgArr)[iFace] )
 		{
 			fprintf(stderr, "Can\'t load image from %s\n", imgFilename);
 			return 0;
@@ -288,9 +280,9 @@ int Utils::loadFaceImgArray(const char * filename)
 
 	printf("Data loaded from '%s': (%d images of %d people).\n", filename, nFaces, nPersons);
 	printf("People: ");
-	if (nPersons > 0)
+	if (*nPersons > 0)
 		printf("<%s>", personNames[0].c_str());
-	for (i=1; i<nPersons; i++) {
+	for (i=1; i<*nPersons; i++) {
 		printf(", <%s>", personNames[i].c_str());
 	}
 	printf(".\n");
