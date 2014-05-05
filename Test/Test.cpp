@@ -92,7 +92,7 @@ void Test::recognizeFileList(const char *szFileTest)
 	float confidence;
 
 	// load test images and ground truth for person number
-	nTestFaces = Utils::loadFaceImgArray(szFileTest);
+	nTestFaces = Utils::loadFaceImgArray(&faceImgArr,szFileTest,&nPersons,personNames,&personNumTruthMat);
 	printf("%d test faces loaded\n", nTestFaces);
 
 	// load the saved training data
@@ -168,10 +168,10 @@ void Test::recognizeImage(const char *imgFilename)
 		projectedTestFace);
 
 	vector<pair<float,int>> nearesNeighbors = findNearestNeighbors(projectedTestFace);
-	nearest  = trainPersonNumMat->data.i[iNearest];
+	//nearest  = trainPersonNumMat->data.i[iNearest];
 
-	tallyFaceRecognizeTime = (double)cvGetTickCount() - timeFaceRecognizeStart;
-	printf("TOTAL TIME: %.1fms average.\n", tallyFaceRecognizeTime/((double)cvGetTickFrequency() * 1000.0 * (nCorrect+nWrong) ) );
+	//tallyFaceRecognizeTime = (double)cvGetTickCount() - timeFaceRecognizeStart;
+	//printf("TOTAL TIME: %.1fms average.\n", tallyFaceRecognizeTime/((double)cvGetTickFrequency() * 1000.0 * (nCorrect+nWrong) ) );
 
 }
 
@@ -216,7 +216,7 @@ int Test::findNearestNeighbor(float * projectedTestFace, float *pConfidence)
 // Find the most likely person based on a detection. Returns the index, and stores the confidence value into pConfidence.
 vector<pair<float,int>> Test::findNearestNeighbors(float * projectedTestFace)
 {
-	priority_queue<pair<float,int>,less<pair<float,int> > > neighbors;
+	priority_queue<pair<float,int> > neighbors;
 	vector<pair<float,int> > nearestNeighbors;
 
 	//double leastDistSq = 1e12;
@@ -241,8 +241,8 @@ vector<pair<float,int>> Test::findNearestNeighbors(float * projectedTestFace)
 	}
 
 	for(int i=0;i<5;i++){
-		nearestNeighbors.push_back(neighbors.top);
-		neighbors.pop;
+		nearestNeighbors.push_back(neighbors.top());
+		neighbors.pop();
 	}
 	return nearestNeighbors;
 }
