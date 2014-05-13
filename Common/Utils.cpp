@@ -178,7 +178,6 @@ CvRect Utils::detectFaceInImage(const IplImage *inputImg, const CvHaarClassifier
 	CvRect rc;
 	double t;
 	CvSeq* rects;
-	int i;
 
 	storage = cvCreateMemStorage(0);
 	cvClearMemStorage( storage );

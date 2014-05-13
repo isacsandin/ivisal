@@ -19,10 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="createInput.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Train.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="createInput.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Train.cpp" />
   </ItemGroup>
