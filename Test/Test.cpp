@@ -4,7 +4,7 @@
 Test::Test(void)
 {
 	faceImgArr				= 0; // array of face images
-	personNumTruthMat		= 0; // array of person numbers
+	trainPersonNumMat		= 0; // array of person numbers
 	nPersons                = 0; // the number of people in the training set. Added by Shervin.
 	nTrainFaces             = 0; // the number of training images
 	nEigens                 = 0; // the number of eigenvalues
@@ -20,7 +20,7 @@ Test::~Test(void)
 }
 
 // Open the training data from the file 'facedata.xml'.
-int Test::loadTrainingData(CvMat ** pTrainPersonNumMat)
+int Test::loadTrainingData()
 {
 	CvFileStorage * fileStorage;
 	int i;
@@ -51,7 +51,7 @@ int Test::loadTrainingData(CvMat ** pTrainPersonNumMat)
 	// Load the data
 	nEigens = cvReadIntByName(fileStorage, 0, "nEigens", 0);
 	nTrainFaces = cvReadIntByName(fileStorage, 0, "nTrainFaces", 0);
-	*pTrainPersonNumMat = (CvMat *)cvReadByName(fileStorage, 0, "trainPersonNumMat", 0);
+	trainPersonNumMat = (CvMat *)cvReadByName(fileStorage, 0, "trainPersonNumMat", 0);
 	eigenValMat  = (CvMat *)cvReadByName(fileStorage, 0, "eigenValMat", 0);
 	projectedTrainFaceMat = (CvMat *)cvReadByName(fileStorage, 0, "projectedTrainFaceMat", 0);
 	pAvgTrainImg = (IplImage *)cvReadByName(fileStorage, 0, "avgTrainImg", 0);
@@ -82,7 +82,7 @@ int Test::loadTrainingData(CvMat ** pTrainPersonNumMat)
 void Test::recognizeFileList(const char *szFileTest)
 {
 	int i, nTestFaces  = 0;         // the number of test images
-	CvMat * trainPersonNumMat = 0;  // the person numbers during training
+	CvMat * personNumTruthMat = 0;  // the person numbers during training
 	float * projectedTestFace = 0;
 	const char *answer;
 	int nCorrect = 0;
@@ -96,7 +96,7 @@ void Test::recognizeFileList(const char *szFileTest)
 	printf("%d test faces loaded\n", nTestFaces);
 
 	// load the saved training data
-	if( !loadTrainingData( &trainPersonNumMat ) ) return;
+	if( !loadTrainingData() ) return;
 
 	// project the test images onto the PCA subspace
 	projectedTestFace = (float *)cvAlloc( nEigens*sizeof(float) );
@@ -138,10 +138,9 @@ void Test::recognizeFileList(const char *szFileTest)
 
 
 // Recognize the face in test images given, and return the best 5 images.
-void Test::recognizeImage(const char *imgFilename)
+void Test::recognizeImage(const char *imgFilename,const char *imgListFilename)
 {
-	int i, nTestFaces  = 0;         // the number of test images
-	CvMat * trainPersonNumMat = 0;  // the person numbers during training
+	int i, nTrainFaces  = 0;         // the number of test images
 	float * projectedTestFace = 0;
 	const char *answer;
 	double timeFaceRecognizeStart;
@@ -150,8 +149,10 @@ void Test::recognizeImage(const char *imgFilename)
 	IplImage * faceImg = (IplImage *)cvAlloc(sizeof(IplImage));
 	faceImg = cvLoadImage(imgFilename, CV_LOAD_IMAGE_GRAYSCALE);
 
+	//nTrainFaces = Utils::loadFaceImgArray(&faceImgArr,imgListFilename,&nPersons,personNames,&personNumTruthMat);
+
 	// load the saved training data
-	if( !loadTrainingData( &trainPersonNumMat ) ) return;
+	if( !loadTrainingData() ) return;
 
 	// project the test images onto the PCA subspace
 	projectedTestFace = (float *)cvAlloc( nEigens*sizeof(float) );
@@ -168,11 +169,15 @@ void Test::recognizeImage(const char *imgFilename)
 		projectedTestFace);
 
 	vector<pair<float,int>> nearesNeighbors = findNearestNeighbors(projectedTestFace);
+	for(int i=0;i<nearesNeighbors.size();i++){
+		printf("%f %s\n",nearesNeighbors[i].first,
+			personNames[trainPersonNumMat->data.i[nearesNeighbors[i].second]].c_str());
+	}
+	
 	//nearest  = trainPersonNumMat->data.i[iNearest];
 
 	//tallyFaceRecognizeTime = (double)cvGetTickCount() - timeFaceRecognizeStart;
 	//printf("TOTAL TIME: %.1fms average.\n", tallyFaceRecognizeTime/((double)cvGetTickFrequency() * 1000.0 * (nCorrect+nWrong) ) );
-
 }
 
 

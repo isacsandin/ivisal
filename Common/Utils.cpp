@@ -123,7 +123,7 @@ IplImage* Utils::cropImage(const IplImage *img, const CvRect region)
 	imageRGB = cvCreateImage(size, IPL_DEPTH_8U, img->nChannels);
 	cvCopy(imageTmp, imageRGB, NULL);	// Copy just the region.
 
-    cvReleaseImage( &imageTmp );
+	cvReleaseImage( &imageTmp );
 	return imageRGB;		
 }
 
@@ -200,8 +200,8 @@ CvRect Utils::detectFaceInImage(const IplImage *inputImg, const CvHaarClassifier
 
 	// Get the first detected face (the biggest).
 	if (rects->total > 0) {
-        rc = *(CvRect*)cvGetSeqElem( rects, 0 );
-    }
+		rc = *(CvRect*)cvGetSeqElem( rects, 0 );
+	}
 	else
 		rc = cvRect(-1,-1,-1,-1);	// Couldn't find the face.
 

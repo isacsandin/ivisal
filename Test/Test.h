@@ -6,11 +6,9 @@
 
 class Test
 {
-
-
 private:
 	IplImage ** faceImgArr; // array of face images
-	CvMat    *  personNumTruthMat; // array of person numbers
+	CvMat    *  trainPersonNumMat; // array of person numbers
 	vector<string> personNames;			// array of person names (indexed by the person number). Added by Shervin.
 	int nPersons; // the number of people in the training set. Added by Shervin.
 	int nTrainFaces; // the number of training images
@@ -24,12 +22,12 @@ public:
 	Test(void);
 	~Test(void);
 	// Open the training data from the file 'facedata.xml'.
-	int loadTrainingData(CvMat ** pTrainPersonNumMat);
+	int loadTrainingData();
 	// Recognize the face in each of the test images given, and compare the results with the truth.
 	void recognizeFileList(const char *szFileTest);
 	// Find the most likely person based on a detection. Returns the index, and stores the confidence value into pConfidence.
 	int findNearestNeighbor(float * projectedTestFace, float *pConfidence);
 	vector<pair<float,int>> findNearestNeighbors(float * projectedTestFace);
-	void recognizeImage(const char *imgFilename);
+	void recognizeImage(const char *imgFilename,const char *imgListFilename);
 };
 

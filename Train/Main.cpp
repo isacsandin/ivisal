@@ -24,6 +24,7 @@ int main( int argc, char** argv )
 			return 1;
 		}
 		train->learn(szFileTrain);
+		system("pause");
 	}
 
 	return 0;
