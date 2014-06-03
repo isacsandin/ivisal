@@ -27,6 +27,7 @@ void Train::learn(const char *szFileTrain)
 	// load training data
 	printf("Loading the training images in '%s'\n", szFileTrain);
 	nTrainFaces = Utils::loadFaceImgArray(&faceImgArr, szFileTrain, &nPersons, personNames, &personNumTruthMat);
+
 	printf("Got %d training images.\n", nTrainFaces);
 	if( nTrainFaces < 2 )
 	{
